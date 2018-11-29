@@ -1,0 +1,30 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+import os
+import argparse
+import subprocess
+
+cmds=[('latex','tex'), ('dvips', 'dvi'), ('ps2pdf','ps')]
+
+def main():
+    parser = argparse.ArgumentParser("latex to pdf")
+    parser.add_argument("-i", action="store", dest="infile", help="input file")
+    args = parser.parse_args()
+    if args.infile:
+        print("parse",args.infile)
+        infile=os.path.splitext(args.infile)
+        print(infile)
+        cmd1 = "{} {}{}".format(cmds[0][0],infile[0],infile[1])
+        subprocess.call(cmd1, shell=True)
+        print(cmd1)
+        cmd2 = "{} {}.{}".format(cmds[1][0], infile[0], cmds[1][1])
+        subprocess.call(cmd2, shell=True)
+        print(cmd2)
+        cmd3 = "{} {}.{}".format(cmds[2][0], infile[0], cmds[2][1])
+        print(cmd3)
+        subprocess.call(cmd3, shell=True)
+    else:
+        parser.error("No input file")
+
+if __name__ == "__main__":
+    main()

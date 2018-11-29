@@ -1,0 +1,7 @@
+#!/bin/bash                                                                                          
+
+RSYNCSOURCE=rsync://ubuntu.c3sl.ufpr.br/ubuntu/
+BASEDIR=/var/data/mirror/ubuntu
+
+rsync --recursive --times --links --hard-links --exclude "Packages*" --exclude "Sources*" --exclude "Release*" --no-motd -v --dry-run ${RSYNCSOURCE} ${BASEDIR}
+rsync --recursive --times --links --hard-links --delete --delete-after --no-motd -v --dry-run ${RSYNCSOURCE} ${BASEDIR}

@@ -1,0 +1,4 @@
+#!/bin/bash
+MEDIA='/var/data/dvd'
+DRIVE='/dev/sr0'
+dvdbackup -i "${DRIVE}" -o "${MEDIA}/rip" -M -v -n ${1}

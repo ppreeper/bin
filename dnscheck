@@ -1,0 +1,18 @@
+#!/bin/bash
+for ns in `grep nameserver /etc/resolv.conf | awk '{print $2}'`
+do
+    echo $ns `dig @$ns +short $1`
+done
+echo ns1.name.com `dig @162.88.61.47 +short $1`
+echo ns2.name.com `dig @162.88.60.47 +short $1`
+echo ns3.name.com `dig @162.88.61.49 +short $1`
+echo ns4.name.com `dig @162.88.60.49 +short $1`
+echo 222.222.opendns.com `dig @208.67.222.222 +short $1`
+echo 220.220.opendns.com `dig @208.67.220.220 +short $1`
+echo 222.220.opendns.com `dig @208.67.222.220 +short $1`
+echo 220.222.opendns.com `dig @208.67.220.222 +short $1`
+echo 8.8.8.8.google.com  `dig @8.8.8.8 +short $1`
+echo 8.8.4.4.google.com  `dig @8.8.4.4 +short $1`
+echo 9.9.9.9.quad9.ibm   `dig @9.9.9.9 +short $1`
+echo 1.1.1.1.cloudflare  `dig @1.1.1.1 +short $1`
+echo 1.0.0.1.cloudflare  `dig @1.0.0.1 +short $1`

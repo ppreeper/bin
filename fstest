@@ -1,0 +1,106 @@
+#!/usr/bin/env python3
+import subprocess
+import re
+import csv
+
+
+cmd = ['fio']
+cmd.append("--direct=1")
+cmd.append("--rw=randrw")
+cmd.append("--refill_buffers")
+cmd.append("--norandommap")
+cmd.append("--randrepeat=0")
+cmd.append("--ioengine=libaio")
+cmd.append("--runtime=60")
+cmd.append("--filename=test")
+
+file_size = ['100', '1000']
+block_size = ['4', '8', '64', '128', '1024']
+rwmix = ['0', '30', '50', '70', '100']
+iojobs = ['1', '2', '4', '8', '16']
+iodepth = ['1', '2', '4', '8', '16']
+
+
+def res_split(name, op, bs, rwm, ioj, iod, res):
+    bwio = [name, op, bs, rwm, ioj, iod, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    for l in range(len(res)):
+        if re.search(r"\sbw ", res[l]):
+            r = res[l].split(":")
+            b = r[1].split(",")
+            # print(b)
+            bwio[6] = (b[0].split("="))[1].strip()
+            bwio[7] = (b[1].split("="))[1].strip()
+            bwio[8] = (b[3].split("="))[1].strip()
+            bwio[9] = (b[4].split("="))[1].strip()
+            bwio[10] = (b[5].split("="))[1].strip()
+        elif re.search(r"\siops ", res[l]):
+            r = res[l].split(":")
+            b = r[1].split(",")
+            # print(b)
+            bwio[11] = (b[0].split("="))[1].strip()
+            bwio[12] = (b[1].split("="))[1].strip()
+            bwio[13] = (b[2].split("="))[1].strip()
+            bwio[14] = (b[3].split("="))[1].strip()
+            bwio[15] = (b[4].split("="))[1].strip()
+    # print(bwio)
+    return bwio
+
+
+def main():
+    for fsize in file_size:
+        outfile(fsize, ["test", "op", "block_size", "rw_mix", "io_jobs", "io_depth", "bw_min", "bw_max", "bw_avg",
+                        "bw_stdev", "bw_samples", "iop_min", "iop_max", "iop_avg", "iop_stdev", "iop_samples"], init=True)
+        for bs in block_size:
+            for r in rwmix:
+                for n in iojobs:
+                    for d in iodepth:
+                        b = list(cmd)
+                        b.append("--size="+fsize+"M")
+                        b.append("--bs=%sk" % bs)
+                        b.append("--rwmixread=%s" % r)
+                        b.append("--numjobs=%s" % n)
+                        b.append("--iodepth=%s" % d)
+                        name = "%s_%s_%s_%s" % (bs, r, n, d)
+                        b.append("--name=%s" % (name))
+                        c = ""
+                        for g in b:
+                            c += g + " "
+                        print(c)
+                        p = subprocess.Popen(b, stdout=subprocess.PIPE)
+                        output, errs = p.communicate()
+                        outs = output.decode("utf-8")
+                        outlines = outs.splitlines()
+                        lenout = len(outlines)
+                        rio = 0
+                        wio = 0
+                        for l in range(lenout):
+                            if re.search(r"\sread", outlines[l]):
+                                rio = l
+                            if re.search(r"\swrite", outlines[l]):
+                                wio = l
+                        res_r = []
+                        res_w = []
+                        if rio == 0:
+                            res_w = outlines[wio:lenout]
+                        elif wio == 0:
+                            res_r = outlines[rio:lenout]
+                        else:
+                            res_r = outlines[rio:wio]
+                            res_w = outlines[wio:lenout]
+                        outfile(fsize, res_split(
+                            name, "read", bs, r, n, d, res_r))
+                        outfile(fsize, res_split(
+                            name, "write", bs, r, n, d, res_w))
+
+
+def outfile(fname, row, init=False):
+    fmode = "a+"
+    if init:
+        fmode = "w+"
+    with open("fs_results_"+fname+".csv", fmode) as f:
+        writer = csv.writer(f, delimiter=';')
+        writer.writerow(row)
+
+
+if __name__ == "__main__":
+    main()

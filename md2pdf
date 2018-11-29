@@ -1,0 +1,79 @@
+#!/usr/bin/env python3
+import os
+import subprocess
+import argparse
+
+head="""<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css">
+<style>
+h1 { text-align: center; }
+table { border-collapse: true; }
+</style>
+</head><body>
+"""
+tail = """</body></html>
+"""
+DEBUG=False
+
+
+def runcmd(cmd):
+    if DEBUG:
+        print(cmd)
+    else:
+        print(cmd)
+        p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
+    output, errs = p.communicate(timeout=3600)
+    outs = output.decode("utf-8")
+    outlines = outs.splitlines()
+    return outlines
+
+
+def cmark(name):
+    hname = "%s.html" % name
+    f = open(hname, 'w')
+    f.write(head)
+    f.close()
+    cmd = "cmark --safe --to html \"%s.md\" >> \"%s.html\"" % (name, name)
+    runcmd(cmd)
+    f = open(hname, 'a')
+    f.write(tail)
+    f.close()
+    return
+
+
+def wkhtmltopdf(name):
+    cmd = "wkhtmltopdf -s Letter \"%s.html\" \"%s.pdf\"" % (name, name)
+    runcmd(cmd)
+    cmd = "rm -f \"%s.html\"" % (name)
+    runcmd(cmd)
+    return
+
+
+def main():
+    parser = argparse.ArgumentParser("markdown to html")
+    parser.add_argument("-i", action="store",
+                        dest="mdfile", help="md file")
+    args = parser.parse_args()
+
+    if args.mdfile:
+        name = args.mdfile
+        names = name.split(".")
+        if os.path.isfile(name):
+            print("file exists")
+            fname = ""
+            for i in range(len(names) - 1):
+                fname += names[i] + "."
+            fname = fname[:-1]
+            cmark(fname)
+            wkhtmltopdf(fname)
+        else:
+            print("file does not exist")
+    else:
+        parser.error("no file specified")
+
+
+if __name__ == '__main__':
+    main()

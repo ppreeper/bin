@@ -1,0 +1,6 @@
+#!/bin/bash
+wget -O $HOME/Public/ipfilter.zip http://upd.emule-security.org/ipfilter.zip
+cd $HOME/Public
+unzip ipfilter.zip
+mv guarding.p2p $HOME/Documents/guarding.dat
+rm $HOME/Public/ipfilter.zip

@@ -1,0 +1,21 @@
+#!/bin/bash
+nonrecursive="-maxdepth 1"
+#find . $nonrecursive -exec rename "s/\ /_/g" "{}" \;
+rename "s/\ /_/g" *
+#find . $nonrecursive -exec rename "s/\(//g" "{}" \;
+rename "s/\(//g" *
+#find . $nonrecursive -exec rename "s/\)//g" "{}" \;
+rename "s/\)//g" *
+#find . $nonrecursive -exec rename "s/\&/and/g" "{}" \;
+rename "s/\&/and/g" *
+#find . $nonrecursive -exec rename "s/\!//g" "{}" \;
+rename "s/\!//g" *
+#find . $nonrecursive -exec rename "s/\%//g" "{}" \;
+rename "s/\%//g" *
+#find . $nonrecursive -exec rename "s/\'//g" "{}" \;
+rename "s/\'//g" *
+#find . $nonrecursive -exec rename "s/\;//g" "{}" \;
+rename "s/\;//g" *
+rename "s/\://g" *
+#find . $nonrecursive -exec rename 's/\$//g' "{}" \;
+rename 's/\$//g' *

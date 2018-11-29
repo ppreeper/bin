@@ -1,0 +1,3 @@
+#!/bin/bash
+mkdir -p "/mnt/${1}/${2}/"
+sshfs -C -o reconnect "${1}:${2}" "/mnt/${1}/${2}/"

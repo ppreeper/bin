@@ -2,8 +2,8 @@
 DCMD="$(which duplicity)"
 HOST=`hostname`
 # DEST="file:///var/data/backup"
-DEST="rsync://rsync@vmnas52::/computer-backups/"${HOST}
-EXCLUDE=${HOME}/exclude-list
+DEST="rsync://rsync@${USERBACK_SERVER}::/computer-backups/${HOST}"
+EXCLUDE=${USERBACK_EXCLUDE}
 MODE=${1}
 USER=${2}
 FILE=${3}

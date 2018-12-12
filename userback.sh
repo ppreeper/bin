@@ -1,4 +1,5 @@
 #!/bin/bash
+. ${HOME}/.cfg/bkp.cfg
 DCMD="$(which duplicity)"
 HOST=`hostname`
 # DEST="file:///var/data/backup"

@@ -1,2 +1,2 @@
 #!/bin/bash
-ss -lutn | awk '{print $1,$2,"\t",$5}'
+ss -nltu | awk '{print $1,$2,"\t",$5}'

@@ -1,18 +1,27 @@
 #!/bin/bash
+digger(){
+    echo ${1} `dig +nocmd +noall +answer +ttlid @${2} a ${3}`
+}
 for ns in `grep nameserver /etc/resolv.conf | awk '{print $2}'`
 do
-    echo $ns `dig @$ns +short $1`
+    digger localhost $ns $1
 done
-echo ns1.name.com `dig @162.88.61.47 +short $1`
-echo ns2.name.com `dig @162.88.60.47 +short $1`
-echo ns3.name.com `dig @162.88.61.49 +short $1`
-echo ns4.name.com `dig @162.88.60.49 +short $1`
-echo 222.222.opendns.com `dig @208.67.222.222 +short $1`
-echo 220.220.opendns.com `dig @208.67.220.220 +short $1`
-echo 222.220.opendns.com `dig @208.67.222.220 +short $1`
-echo 220.222.opendns.com `dig @208.67.220.222 +short $1`
-echo 8.8.8.8.google.com  `dig @8.8.8.8 +short $1`
-echo 8.8.4.4.google.com  `dig @8.8.4.4 +short $1`
-echo 9.9.9.9.quad9.ibm   `dig @9.9.9.9 +short $1`
-echo 1.1.1.1.cloudflare  `dig @1.1.1.1 +short $1`
-echo 1.0.0.1.cloudflare  `dig @1.0.0.1 +short $1`
+digger ns1.arthomson.com 10.0.100.21 ${1}
+digger ns2.arthomson.com 10.0.100.22 ${1}
+digger ktk1.smartt.com 69.31.170.249 ${1}
+digger ktk2.smartt.com 69.67.179.249 ${1}
+digger ns1.smartt.com 69.31.170.53 ${1}
+digger ns2.smartt.com 69.67.179.249 ${1}
+digger ns1.name.com 162.88.61.47 ${1}
+digger ns2.name.com 162.88.60.47 ${1}
+digger ns3.name.com 162.88.61.49 ${1}
+digger ns4.name.com 162.88.60.49 ${1}
+digger 222.222.opendns.com 208.67.222.222 ${1}
+digger 220.220.opendns.com 208.67.220.220 ${1}
+digger 222.220.opendns.com 208.67.222.220 ${1}
+digger 220.222.opendns.com 208.67.220.222 ${1}
+digger 8.8.8.8.google.com  8.8.8.8 ${1}
+digger 8.8.4.4.google.com  8.8.4.4 ${1}
+digger 9.9.9.9.quad9.ibm   9.9.9.9 ${1}
+digger 1.1.1.1.cloudflare  1.1.1.1 ${1}
+digger 1.0.0.1.cloudflare  1.0.0.1 ${1}

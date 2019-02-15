@@ -1,2 +1,2 @@
 #!/bin/bash
-wget -q -O- https://myexternalip.com/raw | cat -
+wget -q -O- https://myexternalip.com/raw | cat - && echo -e "\n"

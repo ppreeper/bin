@@ -3,7 +3,7 @@
 DCMD="$(which duplicity)"
 HOST=`hostname`
 # DEST="file:///var/data/backup"
-DEST="rsync://rsync@${USERBACK_SERVER}::/computer-backups/${HOST}"
+DEST="rsync://rsync@${USERBACK_SERVER}::/bkp/users/${HOST}"
 EXCLUDE=${USERBACK_EXCLUDE}
 MODE=${1}
 USER=${2}

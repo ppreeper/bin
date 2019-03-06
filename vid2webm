@@ -1,2 +1,4 @@
-#!/usr/bin/env bash
-ffmpeg -i "${1}" -threads 8 -map 0:v -map 0:a:0 -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" -c:v libvpx-vp9 -crf 30 -b:v 0 -c:a opus -strict -2 -f webm -y "${1}.webm"
+#!/bin/bash
+echo "${1}"
+VID="${1}"
+ffmpeg -i "${VID}" -map 0:v -map 0:a:0 -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" -c:v libvpx-vp9 -crf 30 -b:v 0 -c:a opus -strict -2 -threads 8 -f webm -y "${VID}.webm"

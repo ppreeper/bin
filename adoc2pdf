@@ -6,6 +6,6 @@ FTR="$HOME/.cfg/nofooter.conf"
 
 asciidoc -b html5 -a data-uri -a stylesheet=${CFG} -f ${FTR} "${DOC}.adoc"
 wkhtmltopdf -s letter --footer-center "Page [page] of [toPage]" "${DOC}.html" "${DOC}.pdf"
-#rm "${DOC}.html"
+rm "${DOC}.html"
 
 

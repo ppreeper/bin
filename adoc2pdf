@@ -1,60 +1,11 @@
-#!/usr/bin/env python3
-import os
-import subprocess
-import argparse
+#!/bin/bash
+FILE="${1}"
+DOC="$(echo ${FILE%.*})"
+CSS="$HOME/.cfg/custom.css"
+FTR="$HOME/.cfg/nofooter.conf"
 
-DEBUG=False
-
-
-def runcmd(cmd):
-    if DEBUG:
-        print(cmd)
-    else:
-        print(cmd)
-        p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
-    output, errs = p.communicate(timeout=3600)
-    outs = output.decode("utf-8")
-    outlines = outs.splitlines()
-    return outlines
+asciidoc -b html5 -a stylesheet=${CFG} -f ${FTR} "${DOC}.adoc"
+wkhtmltopdf -s letter --footer-center "Page [page] of [toPage]" "${DOC}.html" "${DOC}.pdf"
+rm "${DOC}.html"
 
 
-def asciidoctor(fname, ext):
-    cmd = "asciidoctor \"%s.%s\"" % (fname, ext)
-    runcmd(cmd)
-    return
-
-
-def wkhtmltopdf(fname):
-    cmd = "wkhtmltopdf -s Letter \"%s.html\" \"%s.pdf\"" % (fname, fname)
-    runcmd(cmd)
-    cmd = "rm -f \"%s.html\"" % (fname)
-    runcmd(cmd)
-    return
-
-
-def main():
-    parser = argparse.ArgumentParser("asciidoc to pdf")
-    parser.add_argument("-i", action="store",
-                        dest="ascfile", help="asciidoc file")
-    args = parser.parse_args()
-
-    if args.ascfile:
-        name = args.ascfile
-        names = name.split(".")
-        if os.path.isfile(name):
-            print("file exists")
-            fname = ""
-            for i in range(len(names) - 1):
-                fname += names[i] + "."
-            fname = fname[:-1]
-            ext = names[-1]
-            asciidoctor(fname, ext)
-            wkhtmltopdf(fname)
-        else:
-            print("file does not exist")
-    else:
-        parser.error("no file specified")
-
-
-if __name__ == '__main__':
-    main()

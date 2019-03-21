@@ -1,10 +1,10 @@
 #!/bin/bash
 FILE="${1}"
 DOC="$(echo ${FILE%.*})"
-CSS="$HOME/.cfg/css/custom.css"
+CSS="$HOME/.cfg/css/asciidoc.css"
 FTR="$HOME/.cfg/nofooter.conf"
 
-asciidoc -b html5 -a data-uri -a stylesheet=${CFG} -f ${FTR} "${DOC}.adoc"
+asciidoctor -b html5 -a stylesheet=${CFG} "${DOC}.adoc"
 wkhtmltopdf -s letter --footer-center "Page [page] of [toPage]" "${DOC}.html" "${DOC}.pdf"
 rm "${DOC}.html"
 

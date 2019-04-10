@@ -1,11 +1,8 @@
 #!/bin/bash
 FILE="${1}"
 DOC="$(echo ${FILE%.*})"
-CSS="$HOME/.cfg/css/asciidoc.css"
-FTR="$HOME/.cfg/nofooter.conf"
+THEME="$HOME/.asciidoc/themes/"
+STYLE=artg
 
-asciidoctor -b html5 -a stylesheet=${CFG} "${DOC}.adoc"
-wkhtmltopdf -s letter --footer-center "Page [page] of [toPage]" "${DOC}.html" "${DOC}.pdf"
-rm "${DOC}.html"
-
-
+asciidoctor-pdf -r asciidoctor-diagram -a pdf-stylesdir=${THEME} -a pdf-style=${STYLE} -o "${DOC}.pdf" "${DOC}.adoc"
+rm -f diag-*png

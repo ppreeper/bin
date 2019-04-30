@@ -22,9 +22,9 @@ echo "Installing $vers"
 sudo rm -f /tmp/$vers.linux-amd64.tar.gz
 wget -qc https://dl.google.com/go/$vers.linux-amd64.tar.gz -O /tmp/$vers.linux-amd64.tar.gz
 
-sudo ls ${IDIR}/go/bin | sudo xargs -I {} rm -f ${BDIR}/{}
+sudo ls ${IDIR}/go/bin 2>/dev/null | sudo xargs -I {} rm -f ${BDIR}/{}
 sudo rm -rf ${IDIR}/go
-sudo tar axf ${vers}.linux-amd64.tar.gz -C ${IDIR}
+sudo tar axf /tmp/${vers}.linux-amd64.tar.gz -C ${IDIR}
 sudo ls ${IDIR}/go/bin | sudo xargs -I {} ln -sf ${IDIR}/go/bin/{} ${BDIR}/{}
 sudo rm -f /tmp/$vers.linux-amd64.tar.gz
 

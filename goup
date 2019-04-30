@@ -6,7 +6,9 @@ minor=$( git ls-remote --tags https://github.com/golang/go | grep refs/tags/go |
 
 patch=$( git ls-remote --tags https://github.com/golang/go | grep refs/tags/go | grep -v -e beta -e rc[123456789] | awk '{print $2}' | sed "s/refs\/tags\///" | grep ^$major.$minor | awk -F'.' '{print $3}' | sort -g | uniq | tail -1)
 
-if [ $patch=="" ]; then
+vers=""
+
+if [ "$patch" = "" ]; then
     vers=$major.$minor
 else
     vers=$major.$minor.$patch
@@ -14,6 +16,8 @@ fi
 
 IDIR=/usr/local/lib
 BDIR=/usr/local/bin
+
+echo "Installing $vers"
 
 sudo rm -f /tmp/$vers.linux-amd64.tar.gz
 wget -qc https://dl.google.com/go/$vers.linux-amd64.tar.gz -O /tmp/$vers.linux-amd64.tar.gz

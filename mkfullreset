@@ -1,0 +1,6 @@
+#!/bin/bash
+CPU="expr $(cat /proc/cpuinfo | grep ^processor | wc -l) / 2)"
+MEM="expr $(free -t -m | grep ^Mem | awk '{print $2}') / 2"
+minikube stop
+minikube delete
+minikube start --cpus 6 --memory 32768 --disk-size 60g

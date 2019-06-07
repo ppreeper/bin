@@ -2,7 +2,8 @@
 FILE="${1}"
 DOC="$(echo ${FILE%.*})"
 THEME="$HOME/.asciidoc/themes/"
-STYLE=artg
+STYLE=flask
 
-asciidoctor-pdf -r asciidoctor-diagram -a pdf-stylesdir=${THEME} -a pdf-style=${STYLE} -o "${DOC}.pdf" "${DOC}.adoc"
-rm -f diag-*png
+asciidoc -a icons -b html5 --theme=${STYLE} "${DOC}.adoc"
+wkhtmltopdf -s Letter "${DOC}.html" "${DOC}.pdf"
+rm "${DOC}.html"

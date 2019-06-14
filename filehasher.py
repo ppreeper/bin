@@ -1,4 +1,6 @@
-#!/home/peterp/.virtualenvs/pypy3/bin/python
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 import hashlib,os,sys,sqlite3
 conn = sqlite3.connect(':memory:')
 curs = conn.cursor()

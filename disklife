@@ -1,4 +1,5 @@
-#!/home/peterp/.virtualenvs/pypy3/bin/python
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 import subprocess
 import json
 

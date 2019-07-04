@@ -1,0 +1,36 @@
+headerbar{
+    min-height:0;
+    padding-left:2px;
+    padding-right:2px;
+    entry,spinbutton,button,separator{
+        @extend %zero-margin;
+    }
+}
+%zero-margin{
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.default-decoration {
+    min-height:0px;
+    padding: 0px;
+    .titlebutton{
+        min-height:0px;
+        min-width: 0px;
+    }
+}
+
+window.ssd{
+    headerbar.titlebar{
+            @extend %pad-three;
+        button.titlebutton{
+            @extend %pad-three;
+
+        }
+    }
+}
+%pad-three {
+        padding-top:3px;
+        padding-bottom:3px;
+        min-height: 0;
+}

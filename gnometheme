@@ -1,0 +1,2 @@
+#!/bin/bash
+sass ${HOME}/bin/gtk.scss > ${HOME}/.config/gtk-3.0/gtk.css

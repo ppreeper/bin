@@ -6,8 +6,8 @@ for ns in `grep nameserver /etc/resolv.conf | awk '{print $2}'`
 do
     digger localhost $ns $1
 done
-digger ns1.arthomson.com 10.0.100.21 ${1}
-digger ns2.arthomson.com 10.0.100.22 ${1}
+digger ns1.arthomson.com 10.0.100.15 ${1}
+digger ns2.arthomson.com 10.0.103.15 ${1}
 digger ktk1.smartt.com 69.31.170.249 ${1}
 digger ktk2.smartt.com 69.67.179.249 ${1}
 digger ns1.smartt.com 69.31.170.53 ${1}

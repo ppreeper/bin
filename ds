@@ -6,4 +6,4 @@ else
     DIR="${1}"
 fi
 
-find ${DIR} -maxdepth 1 -type d | sort | xargs -I '{}' du -s --block-size=M '{}'
+find ${DIR} -maxdepth 1 -type d | sort | grep -v ^\.$ | xargs -I '{}' du -s --block-size=M '{}'

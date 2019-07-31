@@ -1,7 +1,7 @@
 #!/bin/bash
 FILE="${1}"
 DOC="$(echo ${FILE%.*})"
-THEME="$HOME/.asciidoc/themes/"
+THEME="$HOME/workspace/asciidoc/themes/"
 STYLE=pub_talk
 
 asciidoc -a icons -b html5 --theme=${STYLE} "${DOC}.adoc"

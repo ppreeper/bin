@@ -1,0 +1,17 @@
+#!/bin/bash
+SITE=$1
+COMPLETE="NO"
+if [ -z $SITE ]; then
+    echo "No site specified"
+    echo "Usage: ngensite <sitename> "
+else
+    if [ -e /etc/nginx/sites-enabled/$1 ]; then
+        echo "Site already enabled"
+    else
+        if [ -e /etc/nginx/sites-available/$1 ]; then
+            ln -s /etc/nginx/sites-available/$1 /etc/nginx/sites-enabled/$1
+        else
+            echo "Site not available. Please create a config file first"
+        fi
+    fi
+fi

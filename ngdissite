@@ -1,0 +1,15 @@
+#!/bin/bash
+SITE=$1
+COMPLETE="NO"
+if [ -z $SITE ]; then
+    echo "No site specified"
+    echo "Usage: ngdissite <sitename> "
+else
+    if [ -e /etc/nginx/sites-enabled/$1 ]; then
+        rm -f /etc/nginx/sites-enabled/$1
+        echo "Site" $1 "disabled. Please run:"
+        echo "service nginx restart"
+    else
+        echo "Site not available"
+    fi
+fi

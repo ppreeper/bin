@@ -1,9 +1,11 @@
 #!/bin/bash
 FILE="${1}"
 DOC="$(echo ${FILE%.*})"
-THEME="$HOME/workspace/asciidoc/themes/"
-STYLE=flask
+THEME="$HOME/workspace/asciidoctor"
+STYLE=basic
 
-asciidoc -a icons -b html5 --theme=${STYLE} "${DOC}.adoc"
-wkhtmltopdf -s Letter "${DOC}.html" "${DOC}.pdf"
+#asciidoc -a icons -b html5 --theme=${STYLE} "${DOC}.adoc"
+#wkhtmltopdf -s Letter "${DOC}.html" "${DOC}.pdf"
+#rm "${DOC}.html"
+asciidoctor-pdf -a pdf-themesdir=$THEME/themes -a pdf-theme=$STYLE -a pdf-fontsdir=$THEME/fonts "${DOC}.adoc"
 rm "${DOC}.html"

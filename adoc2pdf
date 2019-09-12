@@ -7,5 +7,5 @@ STYLE=basic
 #asciidoc -a icons -b html5 --theme=${STYLE} "${DOC}.adoc"
 #wkhtmltopdf -s Letter "${DOC}.html" "${DOC}.pdf"
 #rm "${DOC}.html"
-asciidoctor-pdf -a pdf-themesdir=$THEME/themes -a pdf-theme=$STYLE -a pdf-fontsdir=$THEME/fonts "${DOC}.adoc"
+asciidoctor-pdf -a pdf-themesdir=$THEME/themes -a pdf-theme=$STYLE -a pdf-fontsdir=$THEME/fonts -r asciidoctor-diagram "${DOC}.adoc"
 rm -f "${DOC}.html"

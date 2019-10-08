@@ -1,0 +1,36 @@
+#!/bin/bash
+# update wkhtmltopdf from website for headers extension
+gitrepo="https://github.com/wkhtmltopdf/wkhtmltopdf"
+
+revs=$( git ls-remote --tags ${gitrepo} | grep refs/tags/ | grep -v -e beta -e rc[123456789] -e '{' -e '}'| awk '{print $2}' | sed "s/refs\/tags\///")
+
+major=""
+for r in $revs
+do
+    echo $r
+done
+
+#echo $revs
+major=$(echo $revs | awk -F'.' '{print $1}' | sort -g | uniq | tail -1)
+#major=$( git ls-remote --tags ${gitrepo} | grep refs/tags/ | grep -v -e beta -e rc[123456789] | awk '{print $2}' | sed "s/refs\/tags\///" | awk -F'.' '{print $1}'| sort -g | uniq | tail -1)
+echo $major
+
+minor=$( echo $revs | awk -F'.' '{print $2}' | sort -g | uniq | tail -1)
+#minor=$( git ls-remote --tags ${gitrepo} | grep refs/tags/ | grep -v -e beta -e rc[123456789] | awk '{print $2}' | sed "s/refs\/tags\///" | grep ^$major | awk -F'.' '{print $2}' | sort -g | uniq | tail -1)
+
+echo $major.$minor
+
+patch=$( echo $revs | awk -F'.' '{print $3}')
+#patch=$( git ls-remote --tags ${gitrepo} | grep refs/tags/ | grep -v -e beta -e rc[123456789] | awk '{print $2}' | sed "s/refs\/tags\///" | grep ^$major.$minor | awk -F'.' '{print $3}' | sort -g | uniq | tail -1)
+
+echo $patch
+vers=""
+
+if [ "$patch" = "" ]; then
+    vers=$major.$minor
+else
+    vers=$major.$minor.$patch
+fi
+
+#echo $vers
+

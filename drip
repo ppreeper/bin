@@ -59,7 +59,7 @@ def cropdetect(disc, title):
 
 
 def dvd2rip(disc):
-    cmd = "dvdbackup -i " + DRIVE + " -o " + RIPDIR + " -M -v -n " + disc
+    cmd = "vobcopy -i " + DRIVE + " -o " + RIPDIR + " -M -t " + disc
     runcmd(cmd)
     return
 

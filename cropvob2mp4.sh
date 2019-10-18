@@ -3,13 +3,13 @@ echo $1 $2
 RIPDIR='/opt/rips'
 DISC=$1
 TITLE=$2
-stdbuf -oL `avconv -i $RIPDIR/$DISC.$TITLE.vob -t 300 -vf cropdetect -f null - 2>&1 | awk '/crop/ { print $NF }'` | {
+stdbuf -oL `ffmpeg -i $RIPDIR/$DISC.$TITLE.vob -t 300 -vf cropdetect -f null - 2>&1 | awk '/crop/ { print $NF }'` | {
 while IFS= read -r crop
 do
 	echo $crop
 done
 }
-#CROPLIST=$(avconv -i $RIPDIR/$DISC.$TITLE.vob -t 300 -vf cropdetect -f null - 2>&1 | awk '/crop/ { print $NF }')
+#CROPLIST=$(ffmpeg -i $RIPDIR/$DISC.$TITLE.vob -t 300 -vf cropdetect -f null - 2>&1 | awk '/crop/ { print $NF }')
 count=0
 width=720
 height=480

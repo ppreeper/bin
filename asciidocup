@@ -28,3 +28,24 @@ sudo tar axf /tmp/${vers}.linux.tar.gz -C ${IDIR}
 sudo find ${IDIR} -type d -exec chmod 777 "{}" \;
 sudo ln -s ${IDIR}/AsciidocFX/AsciidocFX ${BDIR}/AsciidocFX
 
+cat << _EOF_ | sudo tee ${BDIR}/AsciidocFX.svg
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.2" baseProfile="tiny"
+width="10cm" height="10cm" viewBox="0 0 4000 4000">
+<rect x="0" y="0" width="1999" height="4000" fill="yellow" />
+<rect x="2000" y="0" width="1999" height="4000" fill="red" />
+<polygon points="0,4000 1999,0 2000,0 4000,4000 0,4000" fill="blue" />
+</svg>
+_EOF_
+
+cat << _EOF_ | tee ${HOME}/.local/share/applications/AsciidocFX.desktop
+[Desktop Entry]
+Encoding=UTF-8
+Version=1.0
+Type=Application
+Terminal=false
+Exec=/usr/local/bin/AsciidocFX
+Name=AsciidocFX
+Icon=/usr/local/bin/AsciidocFX.svg
+_EOF_
+

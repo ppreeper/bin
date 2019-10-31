@@ -1,29 +1,34 @@
-Intense
-nmap -T4 -A -v
+#!/bin/bash
 
-Intense scan plus UDP
-nmap -sS -sU -T4 -A -v
-
-Intense scan, all TCP ports
-nmap -p 1-65535 -T4 -A -v
-
-Intense scan, no ping
-nmap -T4 -A -v -Pn
-
-Ping scan
-nmap -sn
-
-Quick scan
-nmap -T4 -F
-
-Quick scan plus
-nmap -sV -T4 -O -F --version-light
-
-Quick traceroute
-nmap -sn --traceroute
-
-Regular scan
-nmap
-
-Slow comprehensive scan
-nmap -sS -sU -T4 -A -v -PE -PP -PS80,443 -PA3389 -PU40125 -PY -g 53 --script "default or (discovery and safe)"
+case ${1} in
+    "intense")
+        # Intense
+        nmap -T4 -A -v ${2};;
+    "intenseudp")
+        # Intense scan plus UDP
+        nmap -sS -sU -T4 -A -v ${2};;
+    "intenseall")
+        # Intense scan, all TCP ports
+        nmap -p 1-65535 -T4 -A -v ${2};;
+    "intensenoping")
+        # Intense scan, no ping
+        nmap -T4 -A -v -Pn ${2};;
+    "quick")
+        # Quick scan
+        nmap -T4 -F ${2};;
+    "quickplus")
+        # Quick scan plus
+        sudo nmap -sV -T4 -O -F --version-light ${2};;
+    "ping")
+        # Ping scan
+        nmap -sn ${2};;
+    "traceroute")
+        # Quick traceroute
+        sudo nmap -sn --traceroute ${2};;
+    "full")
+        #Slow comprehensive scan
+        nmap -sS -sU -T4 -A -v -PE -PP -PS80,443 -PA3389 -PU40125 -PY -g 53 --script "default or (discovery and safe)" ${2};;
+    *)
+        # regular scan
+        nmap ${2};;
+esac

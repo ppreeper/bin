@@ -24,7 +24,7 @@ case ${1} in
         nmap -sn ${2};;
     "traceroute")
         # Quick traceroute
-        sudo nmap -sn --traceroute ${2};;
+        sudo nmap -Pn -sn --traceroute ${2};;
     "full")
         #Slow comprehensive scan
         nmap -sS -sU -T4 -A -v -PE -PP -PS80,443 -PA3389 -PU40125 -PY -g 53 --script "default or (discovery and safe)" ${2};;

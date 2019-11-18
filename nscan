@@ -18,7 +18,7 @@ case ${1} in
         nmap -T4 -F ${2};;
     "quickplus")
         # Quick scan plus
-        sudo nmap -sV -T4 -O -F --version-light ${2};;
+        nmap -sV -T4 -F --version-light ${2};;
     "ping")
         # Ping scan
         nmap -sn ${2};;

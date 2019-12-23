@@ -1,0 +1,125 @@
+#!/bin/bash
+PRJ="${1}"
+
+mkdir -p "${PRJ}"
+mkdir -p "${PRJ}/addons"
+mkdir -p "${PRJ}/conf"
+
+cat << _EOF_ | tee "${PRJ}/down.sh"
+docker-compose down
+_EOF_
+
+chmod +x "${PRJ}/down.sh"
+
+cat << _EOF_ | tee "${PRJ}/up.sh"
+docker-compose up -d
+_EOF_
+
+chmod +x "${PRJ}/up.sh"
+
+cat << _EOF_ | tee "${PRJ}/logs.sh"
+docker-compose logs -f
+_EOF_
+
+chmod +x "${PRJ}/logs.sh"
+
+cat << _EOF_ | tee "${PRJ}/reset.sh"
+docker-compose down
+sudo rm -rf data pgdata
+mkdir data pgdata
+chmod 777 data pgdata
+docker-compose up -d db
+sleep 10
+docker-compose down
+_EOF_
+
+chmod +x "${PRJ}/reset.sh"
+
+cat << _EOF_ | tee "${PRJ}/init.sh"
+docker-compose exec app /usr/bin/odoo --no-http --without-demo=none -i base,l10n_ca,auth_ldap
+_EOF_
+
+chmod +x "${PRJ}/init.sh"
+
+cat << _EOF_ | tee "${PRJ}/conf/odoo.conf"
+[options]
+addons_path = /mnt/addons
+data_dir = /var/lib/odoo
+admin_passwd = admin
+; csv_internal_sep = ,
+db_maxconn = 64
+db_host = db
+db_user = odoo
+db_password = odoo
+db_name = odoo
+; db_template = template1
+; dbfilter = .*
+; debug_mode = False
+; email_from = odoo@arthomson.com
+; limit_memory_hard = 2684354560
+; limit_memory_soft = 2147483648
+; limit_request = 8192
+; limit_time_cpu = 60
+; limit_time_real = 120
+; list_db = True
+; log_db = False
+; log_handler = [':INFO']
+; log_level = info
+; logfile = None
+; longpolling_port = 8072
+; max_cron_threads = 2
+; osv_memory_age_limit = 1.0
+; osv_memory_count_limit = False
+; smtp_password = False
+; smtp_port = 25
+; smtp_server = localhost
+; smtp_ssl = False
+; smtp_user = False
+; workers = 0
+xmlrpc = True
+; xmlrpc_interface = 
+xmlrpc_port = 8069
+xmlrpcs = True
+; xmlrpcs_interface = 
+xmlrpcs_port = 8071
+proxy = True
+proxy_mode = True
+_EOF_
+
+
+cat << _EOF_ | tee "${PRJ}/docker-compose.yml"
+version: "3"
+networks:
+    app_net:
+services:
+    db:
+        image: postgres:12-alpine
+        networks:
+        - app_net
+        environment:
+        - POSTGRES_DB=odoo
+        - POSTGRES_USER=odoo
+        - POSTGRES_PASSWORD=odoo
+        - PGDATA=/var/lib/postgresql/data/pgdata
+        volumes:
+        - ./pgdata:/var/lib/postgresql/data/pgdata
+    app:
+        image: odoo:13.0
+        depends_on:
+        - db
+        networks:
+        - app_net
+        ports:
+        - 8069:8069
+        - 8071:8071
+        environment:
+        - HOST=db
+        - PORT=5432
+        - USER=odoo
+        - PASSWORD=odoo
+        volumes:
+        - ./data:/var/lib/odoo
+        - ./conf:/etc/odoo
+        - ./addons:/mnt/addons
+_EOF_
+

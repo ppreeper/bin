@@ -1,1 +1,1 @@
-docker run --rm -it alpine:3.10 /bin/ash
+docker run --rm -it alpine:latest /bin/ash

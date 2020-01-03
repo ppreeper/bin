@@ -97,7 +97,7 @@ def config_defaults():
 def main():
     # file system
     configout = os.environ['HOME'] + '/.ssh/config'
-    configfile = os.environ['HOME'] + '/.ssh/sshconfig.csv'
+    configfile = os.environ['HOME'] + '/workspace/ssh/sshconfig.csv'
     # configout = 'sshconfig.cfg'
     # configfile = 'sshconfig.csv'
     # Database

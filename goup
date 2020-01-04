@@ -17,14 +17,42 @@ fi
 IDIR=/usr/local/lib
 BDIR=/usr/local/bin
 
-echo "Installing $vers"
+function download(){
+    echo "download $1 version"
+    echo "Installing $vers"
+    sudo rm -f /tmp/$vers.linux-amd64.tar.gz
+    wget -qc https://dl.google.com/go/$vers.linux-amd64.tar.gz -O /tmp/$vers.linux-amd64.tar.gz
+    sudo ls ${IDIR}/go/bin 2>/dev/null | sudo xargs -I {} rm -f ${BDIR}/{}
+    sudo rm -rf ${IDIR}/go
+    sudo tar axf /tmp/${vers}.linux-amd64.tar.gz -C ${IDIR}
+    sudo ls ${IDIR}/go/bin | sudo xargs -I {} ln -sf ${IDIR}/go/bin/{} ${BDIR}/{}
+    sudo rm -f /tmp/$vers.linux-amd64.tar.gz
+}
 
-sudo rm -f /tmp/$vers.linux-amd64.tar.gz
-wget -qc https://dl.google.com/go/$vers.linux-amd64.tar.gz -O /tmp/$vers.linux-amd64.tar.gz
+function uptodate(){
+    echo "go version is current"
+}
 
-sudo ls ${IDIR}/go/bin 2>/dev/null | sudo xargs -I {} rm -f ${BDIR}/{}
-sudo rm -rf ${IDIR}/go
-sudo tar axf /tmp/${vers}.linux-amd64.tar.gz -C ${IDIR}
-sudo ls ${IDIR}/go/bin | sudo xargs -I {} ln -sf ${IDIR}/go/bin/{} ${BDIR}/{}
-sudo rm -f /tmp/$vers.linux-amd64.tar.gz
-
+GO=$(which go)
+if [ "${GO}" == "" ]; then
+    echo "Not Installed"
+    download new
+else
+    GOVER=$(${GO} version | awk '{print $3}' | sed 's/^go//')
+    GOMAJOR=$(echo $GOVER | awk -F'.' '{print $1}')
+    GOMINOR=$(echo $GOVER | awk -F'.' '{print $2}')
+    GOPATCH=$(echo $GOVER | awk -F'.' '{print $3}')
+    if [ $((${GOMAJOR})) -lt $((${major})) ]; then
+        download major
+    else
+        if [ $((${GOMINOR})) -lt $((${minor})) ]; then
+            download minor
+        else
+            if [ $((${GOPATCH})) -lt $((${patch})) ]; then
+                download patch
+            else
+                uptodate
+            fi
+        fi
+    fi
+fi

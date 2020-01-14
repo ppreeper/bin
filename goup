@@ -31,7 +31,7 @@ function download(){
 }
 
 function uptodate(){
-    echo "go version is current"
+    echo "go version ${vers} is current"
 }
 
 GO=$(which go)

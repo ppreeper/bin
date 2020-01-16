@@ -15,13 +15,13 @@ case ${1} in
         nmap -T4 -A -v -Pn ${2};;
     "quick")
         # Quick scan
-        nmap -T4 -F ${2};;
+        nmap -oG - -T4 -F ${2};;
     "quickplus")
         # Quick scan plus
-        nmap -sV -T4 -F --version-light ${2};;
+        nmap -oG - -sV -T4 -F --version-light ${2};;
     "ping")
         # Ping scan
-        nmap -sn ${2};;
+        nmap -oG - -sn ${2};;
     "traceroute")
         # Quick traceroute
         sudo nmap -Pn -sn --traceroute ${2};;

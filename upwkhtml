@@ -32,5 +32,5 @@ else
     vers=$major.$minor.$patch
 fi
 
-#echo $vers
+echo $vers
 

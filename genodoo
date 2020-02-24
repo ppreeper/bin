@@ -90,36 +90,36 @@ _EOF_
 cat << _EOF_ | tee "${PRJ}/docker-compose.yml"
 version: "3"
 networks:
-    app_net:
+  app_net:
 services:
-    db:
-        image: postgres:12-alpine
-        networks:
-        - app_net
-        environment:
-        - POSTGRES_DB=odoo
-        - POSTGRES_USER=odoo
-        - POSTGRES_PASSWORD=odoo
-        - PGDATA=/var/lib/postgresql/data/pgdata
-        volumes:
-        - ./pgdata:/var/lib/postgresql/data/pgdata
-    app:
-        image: odoo:13.0
-        depends_on:
-        - db
-        networks:
-        - app_net
-        ports:
-        - 8069:8069
-        - 8071:8071
-        environment:
-        - HOST=db
-        - PORT=5432
-        - USER=odoo
-        - PASSWORD=odoo
-        volumes:
-        - ./data:/var/lib/odoo
-        - ./conf:/etc/odoo
-        - ./addons:/mnt/addons
+  db:
+    image: postgres:12-alpine
+    networks:
+      - app_net
+    environment:
+      - POSTGRES_DB=odoo
+      - POSTGRES_USER=odoo
+      - POSTGRES_PASSWORD=odoo
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data/pgdata
+  app:
+    image: odoo:13-bionic
+    depends_on:
+      - db
+    networks:
+      - app_net
+    ports:
+      - 8069:8069
+      - 8071:8071
+    environment:
+      - HOST=db
+      - PORT=5432
+      - USER=odoo
+      - PASSWORD=odoo
+    volumes:
+      - ./data:/var/lib/odoo
+      - ./conf:/etc/odoo
+      - ./addons:/mnt/addons
 _EOF_
 

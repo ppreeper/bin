@@ -1,2 +1,0 @@
-#!/bin/bash
-sudo bash -c "apt update -y; apt full-upgrade --allow-downgrades -y; apt autoremove -y; apt-get -y autoclean; flatpak update -y"

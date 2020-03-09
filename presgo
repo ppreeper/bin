@@ -1,2 +1,0 @@
-#!/bin/bash 
-present -http `hostname`:3999 -orighost `hostname` -notes

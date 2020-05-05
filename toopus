@@ -1,4 +1,4 @@
 #!/bin/bash
-echo $1
-AUD=$1
-ffmpeg -i "$AUD" -threads 8 -c:a libopus -ac 2 -q:a -1 -f opus -y "$AUD".opus
+FILE="${1}"
+AUD="$(echo ${FILE%.*})"
+ffmpeg -i "$FILE" -c:v none -c:a opus -strict -2 -y "$AUD.opus"

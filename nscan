@@ -15,10 +15,10 @@ case ${1} in
         nmap -T4 -A -v -Pn ${2};;
     "quick")
         # Quick scan
-        nmap -oG - -T4 -F ${2};;
+        nmap -oG - -PN -T4 -F ${2};;
     "quickplus")
         # Quick scan plus
-        nmap -oG - -sV -T4 -F --version-light ${2};;
+        nmap -oG - -PN -sV -T4 -F --version-light ${2};;
     "ping")
         # Ping scan
         nmap -oG - -sn ${2};;
